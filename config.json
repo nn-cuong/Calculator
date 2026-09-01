@@ -1,0 +1,9 @@
+{
+  "package": "com.trimui.calculator",
+  "label": "Calculator",
+  "label.ch.lang": "计算器",
+  "icontop": "icon.png",
+  "icon": "",
+  "launch": "launch.sh",
+  "description": "A feature-rich Calculator mimicking Google Calculator."
+}
