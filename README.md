@@ -1,6 +1,6 @@
 # Calculator App
 
-Một ứng dụng máy tính (Calculator) mã nguồn mở, được thiết kế và tối ưu đặc biệt cho các hệ máy chơi game cầm tay (như Trimui Brick Pro, TrimUI Smart Pro).
+Một ứng dụng máy tính (Calculator) mã nguồn mở, được tối ưu hóa đặc biệt cho Trimui Brick Pro.
 
 ## 🌟 Tính năng chính
 - Hỗ trợ các phép toán cơ bản (Cộng, trừ, nhân, chia) và ngoặc.
