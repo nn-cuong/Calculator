@@ -2,6 +2,7 @@
 import os
 import sys
 import math
+import json
 
 # Add local bundled vendor
 VENDOR_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "vendor")
@@ -19,18 +20,93 @@ except ImportError as e:
     sys.exit(1)
 
 FONT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "font.ttf")
+SAVES_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "saves.json")
 
-# Colors matching Vintage Nature Palette
-BG_COLOR = sdl2.ext.Color(235, 213, 171)        # Beige #EBD5AB
-BTN_BG = sdl2.ext.Color(139, 174, 102)          # Light Green #8BAE66
-BTN_OP_BG = sdl2.ext.Color(98, 129, 65)         # Dark Green #628141
-BTN_EQ_BG = sdl2.ext.Color(217, 83, 79)         # Retro Red #D9534F
-TEXT_COLOR = sdl2.SDL_Color(82, 70, 70, 255)    # Dark text for Beige BG
-TEXT_BTN_COLOR = sdl2.SDL_Color(245, 245, 245, 255) # White text for buttons
-TEXT_EQ_COLOR = sdl2.SDL_Color(255, 255, 255, 255) # White text for Orange EQ
-SEL_COLOR = sdl2.ext.Color(230, 126, 34)        # Orange border
-TAB_BG_ACTIVE = sdl2.ext.Color(139, 174, 102)   # Light Green tab
-TAB_BG_INACTIVE = sdl2.ext.Color(235, 213, 171) # Beige tab
+# Themes
+CALCULATOR_THEMES = [
+    {
+        "name": "Vintage Nature",
+        "bg": sdl2.ext.Color(235, 213, 171),           # #EBD5AB
+        "btn_bg": sdl2.ext.Color(139, 174, 102),       # #8BAE66
+        "btn_op_bg": sdl2.ext.Color(98, 129, 65),      # #628141
+        "btn_eq_bg": sdl2.ext.Color(217, 83, 79),      # #D9534F
+        "sel_color": sdl2.ext.Color(230, 126, 34),     # #E67E22
+        "text": sdl2.SDL_Color(82, 70, 70, 255),       # #524646
+        "text_btn": sdl2.SDL_Color(245, 245, 245, 255),# #F5F5F5
+        "text_eq": sdl2.SDL_Color(255, 255, 255, 255), # #FFFFFF
+        "tab_active": sdl2.ext.Color(139, 174, 102),   # #8BAE66
+        "tab_inactive": sdl2.ext.Color(235, 213, 171), # #EBD5AB
+        "result_preview": sdl2.SDL_Color(154, 160, 166, 255), # #9AA0A6
+        "popup_border": sdl2.ext.Color(139, 69, 19),   # #8B4513
+    },
+    {
+        "name": "Midnight",
+        "bg": sdl2.ext.Color(18, 22, 29),              # #12161D
+        "btn_bg": sdl2.ext.Color(67, 88, 111),         # #43586F
+        "btn_op_bg": sdl2.ext.Color(48, 65, 83),       # #304153
+        "btn_eq_bg": sdl2.ext.Color(170, 76, 76),      # #AA4C4C
+        "sel_color": sdl2.ext.Color(198, 145, 72),     # #C69148
+        "text": sdl2.SDL_Color(227, 232, 239, 255),    # #E3E8EF
+        "text_btn": sdl2.SDL_Color(239, 242, 245, 255),# #EFF2F5
+        "text_eq": sdl2.SDL_Color(255, 255, 255, 255), # #FFFFFF
+        "tab_active": sdl2.ext.Color(67, 88, 111),     # #43586F
+        "tab_inactive": sdl2.ext.Color(18, 22, 29),    # #12161D
+        "result_preview": sdl2.SDL_Color(143, 154, 170, 255), # #8F9AAA
+        "popup_border": sdl2.ext.Color(52, 66, 82),    # #344252
+    },
+    {
+        "name": "Warm Paper",
+        "bg": sdl2.ext.Color(243, 235, 217),           # #F3EBD9
+        "btn_bg": sdl2.ext.Color(133, 157, 112),       # #859D70
+        "btn_op_bg": sdl2.ext.Color(91, 111, 77),      # #5B6F4D
+        "btn_eq_bg": sdl2.ext.Color(181, 91, 82),      # #B55B52
+        "sel_color": sdl2.ext.Color(190, 139, 68),     # #BE8B44
+        "text": sdl2.SDL_Color(64, 57, 47, 255),       # #40392F
+        "text_btn": sdl2.SDL_Color(247, 247, 242, 255),# #F7F7F2
+        "text_eq": sdl2.SDL_Color(255, 255, 255, 255), # #FFFFFF
+        "tab_active": sdl2.ext.Color(133, 157, 112),   # #859D70
+        "tab_inactive": sdl2.ext.Color(243, 235, 217), # #F3EBD9
+        "result_preview": sdl2.SDL_Color(136, 123, 104, 255), # #887B68
+        "popup_border": sdl2.ext.Color(190, 139, 68),  # #BE8B44
+    },
+    {
+        "name": "Forest",
+        "bg": sdl2.ext.Color(24, 32, 27),              # #18201B
+        "btn_bg": sdl2.ext.Color(76, 103, 80),         # #4C6750
+        "btn_op_bg": sdl2.ext.Color(48, 68, 52),       # #304434
+        "btn_eq_bg": sdl2.ext.Color(157, 82, 76),      # #9D524C
+        "sel_color": sdl2.ext.Color(177, 151, 79),     # #B1974F
+        "text": sdl2.SDL_Color(217, 226, 213, 255),    # #D9E2D5
+        "text_btn": sdl2.SDL_Color(238, 242, 235, 255),# #EEF2EB
+        "text_eq": sdl2.SDL_Color(255, 255, 255, 255), # #FFFFFF
+        "tab_active": sdl2.ext.Color(76, 103, 80),     # #4C6750
+        "tab_inactive": sdl2.ext.Color(24, 32, 27),    # #18201B
+        "result_preview": sdl2.SDL_Color(158, 173, 159, 255), # #9EAD9F
+        "popup_border": sdl2.ext.Color(73, 98, 79),    # #49624F
+    }
+]
+
+def load_theme_idx():
+    try:
+        if os.path.exists(SAVES_FILE):
+            with open(SAVES_FILE, 'r') as f:
+                saves = json.load(f)
+                return int(saves.get("theme_idx", 0)) % len(CALCULATOR_THEMES)
+    except:
+        pass
+    return 0
+
+def write_theme_idx(theme_idx):
+    try:
+        saves = {}
+        if os.path.exists(SAVES_FILE):
+            with open(SAVES_FILE, 'r') as f:
+                saves = json.load(f)
+        saves["theme_idx"] = theme_idx % len(CALCULATOR_THEMES)
+        with open(SAVES_FILE, 'w') as f:
+            json.dump(saves, f)
+    except:
+        pass
 
 # Modes
 MODE_123 = 0
@@ -149,6 +225,9 @@ def main():
     history = []
     show_history = False
     show_quit_confirm = False
+    theme_idx = load_theme_idx()
+    l2_pressed = False
+    r2_pressed = False
 
     def render_text(text, font, color):
         tsurf = sdlttf.TTF_RenderUTF8_Blended(font, text.encode('utf-8'), color)
@@ -160,8 +239,128 @@ def main():
         return None, 0, 0
 
     running = True
+    prev_axis_up = False
+    prev_axis_down = False
+    prev_axis_left = False
+    prev_axis_right = False
+    axis_timer_v = 0
+    axis_timer_h = 0
+    dpad_up_held = False
+    dpad_down_held = False
+    dpad_left_held = False
+    dpad_right_held = False
+    dpad_timer_v = 0
+    dpad_timer_h = 0
+
+    def nav_up():
+        nonlocal cursor_y
+        cursor_y = max(0, cursor_y - 1)
+
+    def nav_down():
+        nonlocal cursor_y
+        max_y = 4 if mode == MODE_123 else 3
+        cursor_y = min(max_y, cursor_y + 1)
+
+    def nav_left():
+        nonlocal cursor_x
+        cursor_x = max(0, cursor_x - 1)
+
+    def nav_right():
+        nonlocal cursor_x
+        max_x = 3
+        if mode == MODE_FX and cursor_y == 0 and cursor_x == 1:
+            max_x = 2
+        cursor_x = min(max_x, cursor_x + 1)
+
     while running:
         needs_redraw = True
+        
+        # Poll Joystick Axes
+        axis_up = False
+        axis_down = False
+        axis_left = False
+        axis_right = False
+        for c in controllers:
+            lx = sdl2.SDL_GameControllerGetAxis(c, sdl2.SDL_CONTROLLER_AXIS_LEFTX)
+            ly = sdl2.SDL_GameControllerGetAxis(c, sdl2.SDL_CONTROLLER_AXIS_LEFTY)
+            rx = sdl2.SDL_GameControllerGetAxis(c, sdl2.SDL_CONTROLLER_AXIS_RIGHTX)
+            ry = sdl2.SDL_GameControllerGetAxis(c, sdl2.SDL_CONTROLLER_AXIS_RIGHTY)
+            ax = lx if abs(lx) >= abs(rx) else rx
+            ay = ly if abs(ly) >= abs(ry) else ry
+            if ay < -15000: axis_up = True
+            elif ay > 15000: axis_down = True
+            if ax < -15000: axis_left = True
+            elif ax > 15000: axis_right = True
+
+        if not show_quit_confirm and not show_history:
+            # Vertical Joystick Motion
+            if axis_up:
+                if not prev_axis_up:
+                    nav_up()
+                    axis_timer_v = 0
+                else:
+                    axis_timer_v += 1
+                    if axis_timer_v > 15 and axis_timer_v % 4 == 0:
+                        nav_up()
+            elif axis_down:
+                if not prev_axis_down:
+                    nav_down()
+                    axis_timer_v = 0
+                else:
+                    axis_timer_v += 1
+                    if axis_timer_v > 15 and axis_timer_v % 4 == 0:
+                        nav_down()
+            else:
+                axis_timer_v = 0
+            
+            # Horizontal Joystick Motion
+            if axis_left:
+                if not prev_axis_left:
+                    nav_left()
+                    axis_timer_h = 0
+                else:
+                    axis_timer_h += 1
+                    if axis_timer_h > 15 and axis_timer_h % 4 == 0:
+                        nav_left()
+            elif axis_right:
+                if not prev_axis_right:
+                    nav_right()
+                    axis_timer_h = 0
+                else:
+                    axis_timer_h += 1
+                    if axis_timer_h > 15 and axis_timer_h % 4 == 0:
+                        nav_right()
+            else:
+                axis_timer_h = 0
+
+            # D-pad Repeat
+            if dpad_up_held:
+                dpad_timer_v += 1
+                if dpad_timer_v > 15 and dpad_timer_v % 4 == 0:
+                    nav_up()
+            elif dpad_down_held:
+                dpad_timer_v += 1
+                if dpad_timer_v > 15 and dpad_timer_v % 4 == 0:
+                    nav_down()
+            else:
+                dpad_timer_v = 0
+
+            if dpad_left_held:
+                dpad_timer_h += 1
+                if dpad_timer_h > 15 and dpad_timer_h % 4 == 0:
+                    nav_left()
+            elif dpad_right_held:
+                dpad_timer_h += 1
+                if dpad_timer_h > 15 and dpad_timer_h % 4 == 0:
+                    nav_right()
+            else:
+                dpad_timer_h = 0
+
+        prev_axis_up = axis_up
+        prev_axis_down = axis_down
+        prev_axis_left = axis_left
+        prev_axis_right = axis_right
+
         # Event Loop
         events = sdl2.ext.get_events()
         if len(events) > 0:
@@ -172,6 +371,12 @@ def main():
                 running = False
             elif event.type == sdl2.SDL_KEYDOWN:
                 pass # Ignore ESCAPE / MENU key
+            elif event.type == sdl2.SDL_CONTROLLERBUTTONUP:
+                btn = event.cbutton.button
+                if btn == sdl2.SDL_CONTROLLER_BUTTON_DPAD_UP: dpad_up_held = False
+                elif btn == sdl2.SDL_CONTROLLER_BUTTON_DPAD_DOWN: dpad_down_held = False
+                elif btn == sdl2.SDL_CONTROLLER_BUTTON_DPAD_LEFT: dpad_left_held = False
+                elif btn == sdl2.SDL_CONTROLLER_BUTTON_DPAD_RIGHT: dpad_right_held = False
             elif event.type == sdl2.SDL_CONTROLLERBUTTONDOWN:
                 btn = event.cbutton.button
                 if show_quit_confirm:
@@ -193,17 +398,21 @@ def main():
                         mode = MODE_FX if mode == MODE_123 else MODE_123
                         cursor_x, cursor_y = 0, 0
                     elif btn == sdl2.SDL_CONTROLLER_BUTTON_DPAD_UP:
-                        cursor_y = max(0, cursor_y - 1)
+                        dpad_up_held = True
+                        dpad_timer_v = 0
+                        nav_up()
                     elif btn == sdl2.SDL_CONTROLLER_BUTTON_DPAD_DOWN:
-                        max_y = 4 if mode == MODE_123 else 3
-                        cursor_y = min(max_y, cursor_y + 1)
+                        dpad_down_held = True
+                        dpad_timer_v = 0
+                        nav_down()
                     elif btn == sdl2.SDL_CONTROLLER_BUTTON_DPAD_LEFT:
-                        cursor_x = max(0, cursor_x - 1)
+                        dpad_left_held = True
+                        dpad_timer_h = 0
+                        nav_left()
                     elif btn == sdl2.SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-                        max_x = 3
-                        if mode == MODE_FX and cursor_y == 0 and cursor_x == 1:
-                            max_x = 2
-                        cursor_x = min(max_x, cursor_x + 1)
+                        dpad_right_held = True
+                        dpad_timer_h = 0
+                        nav_right()
                     elif btn == sdl2.SDL_CONTROLLER_BUTTON_A: # Physical B - Backspace
                         if expr == "Error": expr = ""
                         elif len(expr) > 0: expr = expr[:-1]
@@ -258,18 +467,49 @@ def main():
                                 expr += char
                             expr_scroll = 0 # reset scroll
             
+                    elif btn == sdl2.SDL_CONTROLLER_BUTTON_LEFTSTICK: # Fallback L2 on some CFW
+                        theme_idx = (theme_idx - 1) % len(CALCULATOR_THEMES)
+                        write_theme_idx(theme_idx)
+                    elif btn == sdl2.SDL_CONTROLLER_BUTTON_RIGHTSTICK: # Fallback R2 on some CFW
+                        theme_idx = (theme_idx + 1) % len(CALCULATOR_THEMES)
+                        write_theme_idx(theme_idx)
+            elif event.type == sdl2.SDL_CONTROLLERAXISMOTION:
+                axis = event.caxis.axis
+                val = event.caxis.value
+                if axis == sdl2.SDL_CONTROLLER_AXIS_TRIGGERLEFT:
+                    if val > 16000 and not l2_pressed:
+                        l2_pressed = True
+                        theme_idx = (theme_idx - 1) % len(CALCULATOR_THEMES)
+                        write_theme_idx(theme_idx)
+                    elif val <= 16000:
+                        l2_pressed = False
+                elif axis == sdl2.SDL_CONTROLLER_AXIS_TRIGGERRIGHT:
+                    if val > 16000 and not r2_pressed:
+                        r2_pressed = True
+                        theme_idx = (theme_idx + 1) % len(CALCULATOR_THEMES)
+                        write_theme_idx(theme_idx)
+                    elif val <= 16000:
+                        r2_pressed = False
+            
             # Additional fallback for keyboard
             elif event.type == sdl2.SDL_KEYDOWN:
                 key = event.key.keysym.sym
                 if key == sdl2.SDLK_ESCAPE:
                     running = False
+                elif key == sdl2.SDLK_LEFTBRACKET or key == sdl2.SDLK_PAGEUP:
+                    theme_idx = (theme_idx - 1) % len(CALCULATOR_THEMES)
+                    write_theme_idx(theme_idx)
+                elif key == sdl2.SDLK_RIGHTBRACKET or key == sdl2.SDLK_PAGEDOWN:
+                    theme_idx = (theme_idx + 1) % len(CALCULATOR_THEMES)
+                    write_theme_idx(theme_idx)
                     
         if needs_redraw:
-            renderer.clear(BG_COLOR)
+            theme = CALCULATOR_THEMES[theme_idx]
+            renderer.clear(theme["bg"])
             w_w, w_h = 1024, 768
     
             # Render Expression and Result
-            tex, tw, th = render_text(expr if expr else "0", font_large, TEXT_COLOR)
+            tex, tw, th = render_text(expr if expr else "0", font_large, theme["text"])
             if tex:
                 max_scroll = max(0, tw - (w_w - 80))
                 expr_scroll = max(0, min(max_scroll, expr_scroll))
@@ -280,13 +520,13 @@ def main():
                 sdl2.SDL_DestroyTexture(tex)
                 
                 # Mask out the left side so text doesn't overflow into the edge
-                renderer.fill((0, 100, 40, th), BG_COLOR)
+                renderer.fill((0, 100, 40, th), theme["bg"])
                 
             # Optional: render small preview of result below expression
             if expr and expr != "Error":
                 res_preview = evaluate_math(expr)
                 if res_preview and res_preview != "Error" and res_preview != expr:
-                    tex, tw, th = render_text("= " + res_preview, font_medium, sdl2.SDL_Color(154, 160, 166, 255))
+                    tex, tw, th = render_text("= " + res_preview, font_medium, theme["result_preview"])
                     if tex:
                         sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(w_w - tw - 40, 180, tw, th))
                         sdl2.SDL_DestroyTexture(tex)
@@ -298,15 +538,15 @@ def main():
             tab_x = 20
             
             # 123 Tab
-            renderer.fill((tab_x, tab_y, tab_w, tab_h), TAB_BG_ACTIVE if mode == MODE_123 else TAB_BG_INACTIVE)
-            tex, tw, th = render_text("123", font_small, TEXT_BTN_COLOR if mode == MODE_123 else TEXT_COLOR)
+            renderer.fill((tab_x, tab_y, tab_w, tab_h), theme["tab_active"] if mode == MODE_123 else theme["tab_inactive"])
+            tex, tw, th = render_text("123", font_small, theme["text_btn"] if mode == MODE_123 else theme["text"])
             if tex:
                 sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(tab_x + tab_w//2 - tw//2, tab_y + tab_h//2 - th//2, tw, th))
                 sdl2.SDL_DestroyTexture(tex)
                 
             # Fx Tab
-            renderer.fill((tab_x + tab_w, tab_y, tab_w, tab_h), TAB_BG_ACTIVE if mode == MODE_FX else TAB_BG_INACTIVE)
-            tex, tw, th = render_text("Fx", font_small, TEXT_BTN_COLOR if mode == MODE_FX else TEXT_COLOR)
+            renderer.fill((tab_x + tab_w, tab_y, tab_w, tab_h), theme["tab_active"] if mode == MODE_FX else theme["tab_inactive"])
+            tex, tw, th = render_text("Fx", font_small, theme["text_btn"] if mode == MODE_FX else theme["text"])
             if tex:
                 sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(tab_x + tab_w + tab_w//2 - tw//2, tab_y + tab_h//2 - th//2, tw, th))
                 sdl2.SDL_DestroyTexture(tex)
@@ -329,19 +569,19 @@ def main():
                         by = start_y + r * (btn_h + padding)
                         char = grid_123[r][c]
                         
-                        b_color = BTN_BG
+                        b_color = theme["btn_bg"]
                         if char in ['÷', '×', '-', '+', 'AC', '%', '(', ')']:
-                            b_color = BTN_OP_BG
+                            b_color = theme["btn_op_bg"]
                         if char == '=': 
-                            b_color = BTN_EQ_BG
+                            b_color = theme["btn_eq_bg"]
                             
                         if cursor_x == c and cursor_y == r: 
-                            b_color = SEL_COLOR
+                            b_color = theme["sel_color"]
                             renderer.fill((bx-3, by-3, btn_w+6, btn_h+6), sdl2.ext.Color(255, 255, 255))
                     
                         renderer.fill((bx, by, btn_w, btn_h), b_color)
                         
-                        t_color = TEXT_EQ_COLOR if char == '=' else TEXT_BTN_COLOR
+                        t_color = theme["text_eq"] if char == '=' else theme["text_btn"]
                         tex, tw, th = render_text(char, font_medium, t_color)
                         if tex:
                             sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(bx + btn_w//2 - tw//2, by + btn_h//2 - th//2, tw, th))
@@ -371,16 +611,16 @@ def main():
                                 
                             by = start_y + r * (btn_h + padding)
                             
-                            b_color = BTN_OP_BG
-                            if char == 'Inv' and inv_mode: b_color = SEL_COLOR # Highlight when active
+                            b_color = theme["btn_op_bg"]
+                            if char == 'Inv' and inv_mode: b_color = theme["sel_color"] # Highlight when active
                             
                             if cursor_y == r and cursor_x == c: 
-                                b_color = SEL_COLOR
+                                b_color = theme["sel_color"]
                                 renderer.fill((bx-3, by-3, bw+6, btn_h+6), sdl2.ext.Color(255, 255, 255))
                             
                             renderer.fill((bx, by, bw, btn_h), b_color)
                             
-                            tex, tw, th = render_text(char, font_medium, TEXT_BTN_COLOR)
+                            tex, tw, th = render_text(char, font_medium, theme["text_btn"])
                             if tex:
                                 sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(bx + bw//2 - tw//2, by + btn_h//2 - th//2, tw, th))
                                 sdl2.SDL_DestroyTexture(tex)
@@ -390,17 +630,17 @@ def main():
                             by = start_y + r * (btn_h + padding)
                             char = grid[r][c]
                             
-                            b_color = BTN_OP_BG
+                            b_color = theme["btn_op_bg"]
                             if char == '=': 
-                                b_color = BTN_EQ_BG
+                                b_color = theme["btn_eq_bg"]
                                 
                             if cursor_y == r and cursor_x == c: 
-                                b_color = SEL_COLOR
+                                b_color = theme["sel_color"]
                                 renderer.fill((bx-3, by-3, btn_w+6, btn_h+6), sdl2.ext.Color(255, 255, 255))
                             
                             renderer.fill((bx, by, btn_w, btn_h), b_color)
                             
-                            t_color = TEXT_EQ_COLOR if char == '=' else TEXT_BTN_COLOR
+                            t_color = theme["text_eq"] if char == '=' else theme["text_btn"]
                             tex, tw, th = render_text(char, font_medium, t_color)
                             if tex:
                                 sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(bx + btn_w//2 - tw//2, by + btn_h//2 - th//2, tw, th))
@@ -408,14 +648,11 @@ def main():
                                 
             # History Overlay
             if show_history:
-                # Draw semi-transparent background
-                # Note: SDL2.ext renderer.fill doesn't support alpha directly well without blending setup,
-                # We will draw a dark rect covering the screen
                 sdl2.SDL_SetRenderDrawBlendMode(renderer.sdlrenderer, sdl2.SDL_BLENDMODE_BLEND)
-                sdl2.SDL_SetRenderDrawColor(renderer.sdlrenderer, 235, 213, 171, 230) # Beige overlay
+                sdl2.SDL_SetRenderDrawColor(renderer.sdlrenderer, theme["bg"].r, theme["bg"].g, theme["bg"].b, 230)
                 sdl2.SDL_RenderFillRect(renderer.sdlrenderer, sdl2.SDL_Rect(0, 0, w_w, w_h))
                 
-                tex, tw, th = render_text("History", font_large, TEXT_COLOR)
+                tex, tw, th = render_text("History", font_large, theme["text"])
                 if tex:
                     sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(40, 40, tw, th))
                     sdl2.SDL_DestroyTexture(tex)
@@ -423,7 +660,7 @@ def main():
                 y_pos = 140
                 for item in reversed(history):
                     text = f"-> {item['expr']} = {item['res']}"
-                    tex, tw, th = render_text(text, font_small, TEXT_COLOR)
+                    tex, tw, th = render_text(text, font_small, theme["text"])
                     if tex:
                         sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(40, y_pos, tw, th))
                         sdl2.SDL_DestroyTexture(tex)
@@ -431,8 +668,8 @@ def main():
 
         # Footer hints
         if not show_history and not show_quit_confirm:
-            footer = "A: Enter | B: Del | X: = | Y: AC | L/R: Mode | SEL: History | START: Exit"
-            tex, tw, th = render_text(footer, font_mini, TEXT_COLOR)
+            footer = "[A] Enter | B: Del | X: = | Y: AC | L/R: Mode | L2/R2: Theme | SEL: History | START: Exit"
+            tex, tw, th = render_text(footer, font_mini, theme["text"])
             if tex:
                 sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(20, w_h - 40, tw, th))
                 sdl2.SDL_DestroyTexture(tex)
@@ -445,17 +682,17 @@ def main():
             pop_w, pop_h = 600, 200
             pop_x, pop_y = (w_w - pop_w)//2, (w_h - pop_h)//2
             
-            renderer.fill((pop_x, pop_y, pop_w, pop_h), sdl2.ext.Color(139, 69, 19))
-            renderer.fill((pop_x+2, pop_y+2, pop_w-4, pop_h-4), BG_COLOR)
+            renderer.fill((pop_x, pop_y, pop_w, pop_h), theme["popup_border"])
+            renderer.fill((pop_x+2, pop_y+2, pop_w-4, pop_h-4), theme["bg"])
             
             msg = "Exit Calculator?"
-            tex, tw, th = render_text(msg, font_medium, TEXT_COLOR)
+            tex, tw, th = render_text(msg, font_medium, theme["text"])
             if tex:
                 sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(pop_x + pop_w//2 - tw//2, pop_y + 50, tw, th))
                 sdl2.SDL_DestroyTexture(tex)
             
             msg2 = "A: Confirm   B: Cancel"
-            tex, tw, th = render_text(msg2, font_small, TEXT_COLOR)
+            tex, tw, th = render_text(msg2, font_small, theme["text"])
             if tex:
                 sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(pop_x + pop_w//2 - tw//2, pop_y + 130, tw, th))
                 sdl2.SDL_DestroyTexture(tex)
