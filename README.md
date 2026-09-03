@@ -14,12 +14,6 @@ Một ứng dụng máy tính khoa học (Scientific Calculator) mã nguồn m�
   2. **Midnight** — Xanh navy than chì hiện đại, độ tương phản cao, tối ưu khi dùng ban đêm.
   3. **Warm Paper** — Màu giấy kem ngà cổ điển, đem lại cảm giác tự nhiên như sách giấy.
   4. **Forest** — Sắc xanh rêu rừng thảo mộc sâu lắng, tĩnh lặng và thanh lịch.
-  - Chuyển đổi theme tức thì bằng nút cò **L2 / R2**. Tự động lưu theme ưa thích vào `saves.json`.
-- **Xem trước kết quả trực tiếp:** Hiển thị tức thời kết quả tính toán mờ bên dưới công thức khi đang nhập.
-- **Tự động cuộn biểu thức:** Khi công thức tính vượt quá chiều rộng màn hình, văn bản sẽ tự động dịch chuyển theo con trỏ nhập liệu.
-- **Băng cuộn lịch sử tính toán (History Tape):** Lưu lại tối đa 10 phép tính gần nhất, bật/tắt nhanh bằng phím **SELECT**.
-- **Điều hướng mượt mà:** Đồng bộ 100% giữa phím D-pad và cần Analog Joystick, tích hợp cơ chế giữ đè phím (hold-to-repeat) để di chuyển con trỏ liên tục.
-- **Thoát an toàn:** Hộp thoại xác nhận khi bấm **START** tránh vô tình bấm nhầm làm mất phép tính đang dang dở.
 
 ---
 
