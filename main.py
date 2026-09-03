@@ -382,7 +382,7 @@ def main():
                 if show_quit_confirm:
                     if btn == sdl2.SDL_CONTROLLER_BUTTON_B: # Physical A (Confirm)
                         running = False
-                    elif btn == sdl2.SDL_CONTROLLER_BUTTON_A: # Physical B (Cancel)
+                    elif btn in (sdl2.SDL_CONTROLLER_BUTTON_A, sdl2.SDL_CONTROLLER_BUTTON_START): # Physical B or START (Cancel)
                         show_quit_confirm = False
                 elif btn == sdl2.SDL_CONTROLLER_BUTTON_START:
                     show_quit_confirm = True
