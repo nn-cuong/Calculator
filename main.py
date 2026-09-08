@@ -238,6 +238,56 @@ def main():
             return ttex, w, h
         return None, 0, 0
 
+    def draw_footer_badges(items, theme):
+        footer_h = 58
+        footer_y = 768 - footer_h
+        renderer.fill((0, footer_y, 1024, 2), theme["popup_border"])
+        badge_h = 32
+        baseline_y = footer_y + (footer_h - badge_h) // 2
+        pad_x = 7
+        gap_label = 6
+        gap_item = 14
+
+        measured = []
+        total_w = 0
+        sdlttf.TTF_SetFontStyle(font_mini, sdlttf.TTF_STYLE_BOLD)
+        for key_name, label in items:
+            key_surf = sdlttf.TTF_RenderUTF8_Blended(font_mini, key_name.encode('utf-8'), theme["text"])
+            kw = key_surf.contents.w if key_surf else 0
+            if key_surf: sdl2.SDL_FreeSurface(key_surf)
+            bw = max(badge_h, kw + pad_x * 2)
+
+            lbl_surf = sdlttf.TTF_RenderUTF8_Blended(font_mini, label.encode('utf-8'), theme["result_preview"])
+            lw = lbl_surf.contents.w if lbl_surf else 0
+            if lbl_surf: sdl2.SDL_FreeSurface(lbl_surf)
+
+            measured.append((key_name, label, bw, lw))
+            total_w += bw + gap_label + lw + gap_item
+        sdlttf.TTF_SetFontStyle(font_mini, sdlttf.TTF_STYLE_NORMAL)
+
+        if len(items) > 0:
+            total_w -= gap_item
+
+        cur_x = (1024 - total_w) // 2 if total_w < 1024 - 32 else 16
+        for key_name, label, bw, lw in measured:
+            renderer.fill((cur_x, baseline_y, bw, badge_h), theme["popup_border"])
+            renderer.fill((cur_x + 1, baseline_y + 1, bw - 2, badge_h - 2), theme["bg"])
+
+            sdlttf.TTF_SetFontStyle(font_mini, sdlttf.TTF_STYLE_BOLD)
+            t_k, kw, kh = render_text(key_name, font_mini, theme["text"])
+            sdlttf.TTF_SetFontStyle(font_mini, sdlttf.TTF_STYLE_NORMAL)
+            if t_k:
+                sdl2.SDL_RenderCopy(renderer.sdlrenderer, t_k, None, sdl2.SDL_Rect(cur_x + (bw - kw) // 2, baseline_y + (badge_h - kh) // 2, kw, kh))
+                sdl2.SDL_DestroyTexture(t_k)
+
+            lbl_x = cur_x + bw + gap_label
+            t_l, lw, lh = render_text(label, font_mini, theme["result_preview"])
+            if t_l:
+                sdl2.SDL_RenderCopy(renderer.sdlrenderer, t_l, None, sdl2.SDL_Rect(lbl_x, baseline_y + (badge_h - lh) // 2, lw, lh))
+                sdl2.SDL_DestroyTexture(t_l)
+
+            cur_x += bw + gap_label + lw + gap_item
+
     running = True
     prev_axis_up = False
     prev_axis_down = False
@@ -668,11 +718,17 @@ def main():
 
         # Footer hints
         if not show_history and not show_quit_confirm:
-            footer = "[A] Enter | B: Del | X: = | Y: AC | L/R: Mode | L2/R2: Theme | SEL: History | START: Exit"
-            tex, tw, th = render_text(footer, font_mini, theme["text"])
-            if tex:
-                sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(20, w_h - 40, tw, th))
-                sdl2.SDL_DestroyTexture(tex)
+            footer_items = [
+                ("START", "Exit"),
+                ("A", "Enter"),
+                ("B", "Del"),
+                ("X", "="),
+                ("Y", "AC"),
+                ("L/R", "Mode"),
+                ("L2/R2", "Theme"),
+                ("SELECT", "History"),
+            ]
+            draw_footer_badges(footer_items, theme)
 
         if show_quit_confirm:
             sdl2.SDL_SetRenderDrawBlendMode(renderer.sdlrenderer, sdl2.SDL_BLENDMODE_BLEND)
