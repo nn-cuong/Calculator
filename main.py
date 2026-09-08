@@ -739,12 +739,14 @@ def main():
             pop_x, pop_y = (w_w - pop_w)//2, (w_h - pop_h)//2
             
             renderer.fill((pop_x, pop_y, pop_w, pop_h), theme["popup_border"])
-            renderer.fill((pop_x+2, pop_y+2, pop_w-4, pop_h-4), theme["bg"])
+            renderer.fill((pop_x + 2, pop_y + 2, pop_w - 4, pop_h - 4), theme["bg"])
             
             msg = "Exit Calculator?"
+            sdlttf.TTF_SetFontStyle(font_medium, sdlttf.TTF_STYLE_BOLD)
             tex, tw, th = render_text(msg, font_medium, theme["text"])
+            sdlttf.TTF_SetFontStyle(font_medium, sdlttf.TTF_STYLE_NORMAL)
             if tex:
-                sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(pop_x + pop_w//2 - tw//2, pop_y + 50, tw, th))
+                sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(pop_x + pop_w//2 - tw//2, pop_y + 40, tw, th))
                 sdl2.SDL_DestroyTexture(tex)
             
             msg2 = "A: Confirm   B: Cancel"
