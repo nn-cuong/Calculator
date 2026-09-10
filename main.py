@@ -749,11 +749,54 @@ def main():
                 sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(pop_x + pop_w//2 - tw//2, pop_y + 40, tw, th))
                 sdl2.SDL_DestroyTexture(tex)
             
-            msg2 = "A: Confirm   B: Cancel"
-            tex, tw, th = render_text(msg2, font_small, theme["text"])
-            if tex:
-                sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(pop_x + pop_w//2 - tw//2, pop_y + 130, tw, th))
-                sdl2.SDL_DestroyTexture(tex)
+            # Retro Arcade 3D Beveled Keycaps: [A] Confirm   [B] Cancel
+            key_w, key_h = 44, 40
+            gap_label = 12
+            gap_group = 56
+
+            sdlttf.TTF_SetFontStyle(font_small, sdlttf.TTF_STYLE_BOLD)
+            t_ka, kaw, kah = render_text("A", font_small, sdl2.SDL_Color(255, 255, 255, 255))
+            t_la, law, lah = render_text("Confirm", font_small, theme["text"])
+
+            t_kb, kbw, kbh = render_text("B", font_small, sdl2.SDL_Color(255, 255, 255, 255))
+            t_lb, lbw, lbh = render_text("Cancel", font_small, theme["text"])
+            sdlttf.TTF_SetFontStyle(font_small, sdlttf.TTF_STYLE_NORMAL)
+
+            group_a_w = key_w + gap_label + law
+            group_b_w = key_w + gap_label + lbw
+            total_w = group_a_w + gap_group + group_b_w
+            start_x = pop_x + (pop_w - total_w) // 2
+            row_y = pop_y + 120
+
+            # 1. Hardware Keycap [A] (Retro Crimson / Ruby with 3D Bevel)
+            ka_x = start_x
+            renderer.fill((ka_x, row_y + 4, key_w, key_h), sdl2.ext.Color(95, 30, 32))
+            renderer.fill((ka_x, row_y, key_w, key_h - 4), sdl2.ext.Color(168, 50, 55))
+            renderer.fill((ka_x + 2, row_y + 2, key_w - 4, 3), sdl2.ext.Color(210, 85, 90))
+            if t_ka:
+                sdl2.SDL_RenderCopy(renderer.sdlrenderer, t_ka, None,
+                                    sdl2.SDL_Rect(ka_x + (key_w - kaw) // 2, row_y + (key_h - 4 - kah) // 2 + 2, kaw, kah))
+                sdl2.SDL_DestroyTexture(t_ka)
+
+            if t_la:
+                sdl2.SDL_RenderCopy(renderer.sdlrenderer, t_la, None,
+                                    sdl2.SDL_Rect(ka_x + key_w + gap_label, row_y + (key_h - lah) // 2 + 1, law, lah))
+                sdl2.SDL_DestroyTexture(t_la)
+
+            # 2. Hardware Keycap [B] (Muted Slate / Gray with 3D Bevel)
+            kb_x = ka_x + group_a_w + gap_group
+            renderer.fill((kb_x, row_y + 4, key_w, key_h), sdl2.ext.Color(45, 50, 58))
+            renderer.fill((kb_x, row_y, key_w, key_h - 4), sdl2.ext.Color(85, 95, 108))
+            renderer.fill((kb_x + 2, row_y + 2, key_w - 4, 3), sdl2.ext.Color(120, 132, 148))
+            if t_kb:
+                sdl2.SDL_RenderCopy(renderer.sdlrenderer, t_kb, None,
+                                    sdl2.SDL_Rect(kb_x + (key_w - kbw) // 2, row_y + (key_h - 4 - kbh) // 2 + 2, kbw, kbh))
+                sdl2.SDL_DestroyTexture(t_kb)
+
+            if t_lb:
+                sdl2.SDL_RenderCopy(renderer.sdlrenderer, t_lb, None,
+                                    sdl2.SDL_Rect(kb_x + key_w + gap_label, row_y + (key_h - lbh) // 2 + 1, lbw, lbh))
+                sdl2.SDL_DestroyTexture(t_lb)
 
         renderer.present()
         needs_redraw = False
