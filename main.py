@@ -25,6 +25,52 @@ SAVES_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "saves.jso
 # Themes
 CALCULATOR_THEMES = [
     {
+        "name": "Gruvbox Dark",
+        "bg": sdl2.ext.Color(40, 40, 40),               # #282828 (bg0)
+        "btn_bg": sdl2.ext.Color(60, 56, 54),           # #3C3836 (bg1)
+        "btn_op_bg": sdl2.ext.Color(80, 73, 69),        # #504945 (bg2)
+        "btn_eq_bg": sdl2.ext.Color(214, 93, 14),       # #D65D0E (Orange neutral)
+        "sel_color": sdl2.ext.Color(250, 189, 47),      # #FABD2F (Yellow bright)
+        "text": sdl2.SDL_Color(235, 219, 178, 255),     # #EBDBB2 (fg0/fg)
+        "text_btn": sdl2.SDL_Color(245, 237, 214, 255), # #F5EDD6
+        "text_eq": sdl2.SDL_Color(255, 255, 255, 255),  # #FFFFFF
+        "btn_lr_bg": sdl2.ext.Color(254, 128, 25),      # #FE8019 (Orange bright) - [L] [R]
+        "btn_start_bg": sdl2.ext.Color(251, 73, 52),    # #FB4934 (Red bright) - [START]
+        "btn_a_bg": sdl2.ext.Color(184, 187, 38),       # #B8BB26 (Green bright) - [A]
+        "btn_b_bg": sdl2.ext.Color(184, 187, 38),       # #B8BB26 (Green bright) - [B]
+        "btn_x_bg": sdl2.ext.Color(211, 134, 155),     # #D3869B (Purple bright) - [X]
+        "btn_y_bg": sdl2.ext.Color(211, 134, 155),     # #D3869B (Purple bright) - [Y]
+        "btn_l2r2_bg": sdl2.ext.Color(131, 165, 152),   # #83A598 (Blue/Aqua neutral) - [L2/R2] giữ nguyên
+        "btn_select_bg": sdl2.ext.Color(142, 192, 124), # #8EC07C (Aqua bright) - [SELECT]
+        "tab_active": sdl2.ext.Color(80, 73, 69),        # #504945 (bg2)
+        "tab_inactive": sdl2.ext.Color(40, 40, 40),      # #282828 (bg0)
+        "result_preview": sdl2.SDL_Color(168, 153, 132, 255), # #A89984 (Gray fg4)
+        "popup_border": sdl2.ext.Color(102, 92, 84),    # #665C54 (bg3)
+    },
+    {
+        "name": "Gruvbox Light",
+        "bg": sdl2.ext.Color(251, 241, 199),           # #FBF1C7 (Gruvbox light bg0)
+        "btn_bg": sdl2.ext.Color(213, 196, 161),       # #D5C4A1 (Gruvbox light bg2 - đậm hơn cũ #EBDBB2)
+        "btn_op_bg": sdl2.ext.Color(189, 174, 147),    # #BDAE93 (Gruvbox light bg3 - đậm hơn cũ #D5C4A1)
+        "btn_eq_bg": sdl2.ext.Color(175, 58, 3),       # #AF3A03 (Orange dark)
+        "sel_color": sdl2.ext.Color(181, 118, 20),     # #B57614 (Yellow dark)
+        "text": sdl2.SDL_Color(60, 56, 54, 255),       # #3C3836
+        "text_btn": sdl2.SDL_Color(40, 40, 40, 255),   # #282828
+        "text_eq": sdl2.SDL_Color(255, 255, 255, 255), # #FFFFFF
+        "btn_lr_bg": sdl2.ext.Color(254, 128, 25),      # #FE8019 (Orange bright) - [L] [R]
+        "btn_start_bg": sdl2.ext.Color(251, 73, 52),    # #FB4934 (Red bright) - [START]
+        "btn_a_bg": sdl2.ext.Color(184, 187, 38),       # #B8BB26 (Green bright) - [A]
+        "btn_b_bg": sdl2.ext.Color(184, 187, 38),       # #B8BB26 (Green bright) - [B]
+        "btn_x_bg": sdl2.ext.Color(211, 134, 155),     # #D3869B (Purple bright) - [X]
+        "btn_y_bg": sdl2.ext.Color(211, 134, 155),     # #D3869B (Purple bright) - [Y]
+        "btn_l2r2_bg": sdl2.ext.Color(131, 165, 152),   # #83A598 (Blue/Aqua neutral) - [L2/R2]
+        "btn_select_bg": sdl2.ext.Color(142, 192, 124), # #8EC07C (Aqua bright) - [SELECT]
+        "tab_active": sdl2.ext.Color(189, 174, 147),   # #BDAE93 (bg3)
+        "tab_inactive": sdl2.ext.Color(251, 241, 199), # #FBF1C7 (bg0)
+        "result_preview": sdl2.SDL_Color(124, 111, 100, 255), # #7C6F64 (Gray)
+        "popup_border": sdl2.ext.Color(168, 153, 132), # #A89984 (bg4 - đậm hơn)
+    },
+    {
         "name": "Vintage Nature",
         "bg": sdl2.ext.Color(235, 213, 171),           # #EBD5AB
         "btn_bg": sdl2.ext.Color(139, 174, 102),       # #8BAE66
@@ -34,6 +80,14 @@ CALCULATOR_THEMES = [
         "text": sdl2.SDL_Color(82, 70, 70, 255),       # #524646
         "text_btn": sdl2.SDL_Color(245, 245, 245, 255),# #F5F5F5
         "text_eq": sdl2.SDL_Color(255, 255, 255, 255), # #FFFFFF
+        "btn_lr_bg": sdl2.ext.Color(254, 128, 25),      # #FE8019 (Orange bright) - [L] [R]
+        "btn_start_bg": sdl2.ext.Color(251, 73, 52),    # #FB4934 (Red bright) - [START]
+        "btn_a_bg": sdl2.ext.Color(184, 187, 38),       # #B8BB26 (Green bright) - [A]
+        "btn_b_bg": sdl2.ext.Color(184, 187, 38),       # #B8BB26 (Green bright) - [B]
+        "btn_x_bg": sdl2.ext.Color(211, 134, 155),     # #D3869B (Purple bright) - [X]
+        "btn_y_bg": sdl2.ext.Color(211, 134, 155),     # #D3869B (Purple bright) - [Y]
+        "btn_l2r2_bg": sdl2.ext.Color(131, 165, 152),   # #83A598 (Blue/Aqua neutral) - [L2/R2]
+        "btn_select_bg": sdl2.ext.Color(142, 192, 124), # #8EC07C (Aqua bright) - [SELECT]
         "tab_active": sdl2.ext.Color(139, 174, 102),   # #8BAE66
         "tab_inactive": sdl2.ext.Color(235, 213, 171), # #EBD5AB
         "result_preview": sdl2.SDL_Color(154, 160, 166, 255), # #9AA0A6
@@ -49,6 +103,14 @@ CALCULATOR_THEMES = [
         "text": sdl2.SDL_Color(227, 232, 239, 255),    # #E3E8EF
         "text_btn": sdl2.SDL_Color(239, 242, 245, 255),# #EFF2F5
         "text_eq": sdl2.SDL_Color(255, 255, 255, 255), # #FFFFFF
+        "btn_lr_bg": sdl2.ext.Color(254, 128, 25),      # #FE8019 (Orange bright) - [L] [R]
+        "btn_start_bg": sdl2.ext.Color(251, 73, 52),    # #FB4934 (Red bright) - [START]
+        "btn_a_bg": sdl2.ext.Color(184, 187, 38),       # #B8BB26 (Green bright) - [A]
+        "btn_b_bg": sdl2.ext.Color(184, 187, 38),       # #B8BB26 (Green bright) - [B]
+        "btn_x_bg": sdl2.ext.Color(211, 134, 155),     # #D3869B (Purple bright) - [X]
+        "btn_y_bg": sdl2.ext.Color(211, 134, 155),     # #D3869B (Purple bright) - [Y]
+        "btn_l2r2_bg": sdl2.ext.Color(131, 165, 152),   # #83A598 (Blue/Aqua neutral) - [L2/R2]
+        "btn_select_bg": sdl2.ext.Color(142, 192, 124), # #8EC07C (Aqua bright) - [SELECT]
         "tab_active": sdl2.ext.Color(67, 88, 111),     # #43586F
         "tab_inactive": sdl2.ext.Color(18, 22, 29),    # #12161D
         "result_preview": sdl2.SDL_Color(143, 154, 170, 255), # #8F9AAA
@@ -64,6 +126,14 @@ CALCULATOR_THEMES = [
         "text": sdl2.SDL_Color(64, 57, 47, 255),       # #40392F
         "text_btn": sdl2.SDL_Color(247, 247, 242, 255),# #F7F7F2
         "text_eq": sdl2.SDL_Color(255, 255, 255, 255), # #FFFFFF
+        "btn_lr_bg": sdl2.ext.Color(254, 128, 25),      # #FE8019 (Orange bright) - [L] [R]
+        "btn_start_bg": sdl2.ext.Color(251, 73, 52),    # #FB4934 (Red bright) - [START]
+        "btn_a_bg": sdl2.ext.Color(184, 187, 38),       # #B8BB26 (Green bright) - [A]
+        "btn_b_bg": sdl2.ext.Color(184, 187, 38),       # #B8BB26 (Green bright) - [B]
+        "btn_x_bg": sdl2.ext.Color(211, 134, 155),     # #D3869B (Purple bright) - [X]
+        "btn_y_bg": sdl2.ext.Color(211, 134, 155),     # #D3869B (Purple bright) - [Y]
+        "btn_l2r2_bg": sdl2.ext.Color(131, 165, 152),   # #83A598 (Blue/Aqua neutral) - [L2/R2]
+        "btn_select_bg": sdl2.ext.Color(142, 192, 124), # #8EC07C (Aqua bright) - [SELECT]
         "tab_active": sdl2.ext.Color(133, 157, 112),   # #859D70
         "tab_inactive": sdl2.ext.Color(243, 235, 217), # #F3EBD9
         "result_preview": sdl2.SDL_Color(136, 123, 104, 255), # #887B68
@@ -79,6 +149,14 @@ CALCULATOR_THEMES = [
         "text": sdl2.SDL_Color(217, 226, 213, 255),    # #D9E2D5
         "text_btn": sdl2.SDL_Color(238, 242, 235, 255),# #EEF2EB
         "text_eq": sdl2.SDL_Color(255, 255, 255, 255), # #FFFFFF
+        "btn_lr_bg": sdl2.ext.Color(254, 128, 25),      # #FE8019 (Orange bright) - [L] [R]
+        "btn_start_bg": sdl2.ext.Color(251, 73, 52),    # #FB4934 (Red bright) - [START]
+        "btn_a_bg": sdl2.ext.Color(184, 187, 38),       # #B8BB26 (Green bright) - [A]
+        "btn_b_bg": sdl2.ext.Color(184, 187, 38),       # #B8BB26 (Green bright) - [B]
+        "btn_x_bg": sdl2.ext.Color(211, 134, 155),     # #D3869B (Purple bright) - [X]
+        "btn_y_bg": sdl2.ext.Color(211, 134, 155),     # #D3869B (Purple bright) - [Y]
+        "btn_l2r2_bg": sdl2.ext.Color(131, 165, 152),   # #83A598 (Blue/Aqua neutral) - [L2/R2]
+        "btn_select_bg": sdl2.ext.Color(142, 192, 124), # #8EC07C (Aqua bright) - [SELECT]
         "tab_active": sdl2.ext.Color(76, 103, 80),     # #4C6750
         "tab_inactive": sdl2.ext.Color(24, 32, 27),    # #18201B
         "result_preview": sdl2.SDL_Color(158, 173, 159, 255), # #9EAD9F
@@ -270,14 +348,42 @@ def main():
 
         cur_x = (1024 - total_w) // 2 if total_w < 1024 - 32 else 16
         for key_name, label, bw, lw in measured:
+            # Color assignment for hardware button badges
+            b_bg = theme["bg"]
+            t_col = theme["text"]
+            if key_name == "A" and "btn_a_bg" in theme:
+                b_bg = theme["btn_a_bg"]
+                t_col = sdl2.SDL_Color(40, 40, 40, 255) # Dark text on bright Green
+            elif key_name == "B" and "btn_b_bg" in theme:
+                b_bg = theme["btn_b_bg"]
+                t_col = sdl2.SDL_Color(40, 40, 40, 255) # Dark text on bright Green
+            elif key_name == "X" and "btn_x_bg" in theme:
+                b_bg = theme["btn_x_bg"]
+                t_col = sdl2.SDL_Color(40, 40, 40, 255) # Dark text on bright Purple
+            elif key_name == "Y" and "btn_y_bg" in theme:
+                b_bg = theme["btn_y_bg"]
+                t_col = sdl2.SDL_Color(40, 40, 40, 255) # Dark text on bright Purple
+            elif key_name in ["L", "R"] and "btn_lr_bg" in theme:
+                b_bg = theme["btn_lr_bg"]
+                t_col = sdl2.SDL_Color(40, 40, 40, 255) # Dark text on bright Orange
+            elif key_name == "L2/R2" and "btn_l2r2_bg" in theme:
+                b_bg = theme["btn_l2r2_bg"]
+                t_col = sdl2.SDL_Color(40, 40, 40, 255) # Dark text on bright Aqua/Blue
+            elif key_name == "START" and "btn_start_bg" in theme:
+                b_bg = theme["btn_start_bg"]
+                t_col = sdl2.SDL_Color(255, 255, 255, 255) # White text on bright Red
+            elif key_name == "SELECT" and "btn_select_bg" in theme:
+                b_bg = theme["btn_select_bg"]
+                t_col = sdl2.SDL_Color(40, 40, 40, 255) # Dark text on Aqua bright
+
             renderer.fill((cur_x, baseline_y, bw, badge_h), theme["popup_border"])
-            renderer.fill((cur_x + 1, baseline_y + 1, bw - 2, badge_h - 2), theme["bg"])
+            renderer.fill((cur_x + 1, baseline_y + 1, bw - 2, badge_h - 2), b_bg)
 
             sdlttf.TTF_SetFontStyle(font_mini, sdlttf.TTF_STYLE_BOLD)
-            t_k, kw, kh = render_text(key_name, font_mini, theme["text"])
+            t_k, kw, kh = render_text(key_name, font_mini, t_col)
             sdlttf.TTF_SetFontStyle(font_mini, sdlttf.TTF_STYLE_NORMAL)
             if t_k:
-                sdl2.SDL_RenderCopy(renderer.sdlrenderer, t_k, None, sdl2.SDL_Rect(cur_x + (bw - kw) // 2, baseline_y + (badge_h - kh) // 2, kw, kh))
+                sdl2.SDL_RenderCopy(renderer.sdlrenderer, t_k, None, sdl2.SDL_Rect(cur_x + (bw - kw) // 2, baseline_y + (badge_h - kh) // 2 + 1, kw, kh))
                 sdl2.SDL_DestroyTexture(t_k)
 
             lbl_x = cur_x + bw + gap_label
@@ -581,24 +687,60 @@ def main():
                         sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(w_w - tw - 40, 180, tw, th))
                         sdl2.SDL_DestroyTexture(tex)
     
-            # Draw Tabs (123 / Fx)
-            tab_w = 150
-            tab_h = 50
+            # Draw Tabs with Shoulder Buttons ([L] 123 | Fx [R])
+            tab_w = 140
+            tab_h = 46
             tab_y = 20
-            tab_x = 20
-            
+            badge_w = 40
+            badge_h = 32
+            badge_y = tab_y + (tab_h - badge_h) // 2
+
+            # [L] Shoulder Button
+            l_x = 24
+            l_bg = theme.get("btn_lr_bg", theme["bg"])
+            l_fg = sdl2.SDL_Color(40, 40, 40, 255) if "btn_lr_bg" in theme else theme["text"]
+            renderer.fill((l_x, badge_y, badge_w, badge_h), theme["popup_border"])
+            renderer.fill((l_x + 1, badge_y + 1, badge_w - 2, badge_h - 2), l_bg)
+            sdlttf.TTF_SetFontStyle(font_mini, sdlttf.TTF_STYLE_BOLD)
+            tex, tw, th = render_text("L", font_mini, l_fg)
+            sdlttf.TTF_SetFontStyle(font_mini, sdlttf.TTF_STYLE_NORMAL)
+            if tex:
+                sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(l_x + (badge_w - tw)//2, badge_y + (badge_h - th)//2 + 1, tw, th))
+                sdl2.SDL_DestroyTexture(tex)
+
             # 123 Tab
-            renderer.fill((tab_x, tab_y, tab_w, tab_h), theme["tab_active"] if mode == MODE_123 else theme["tab_inactive"])
+            t123_x = l_x + badge_w + 10
+            renderer.fill((t123_x, tab_y, tab_w, tab_h), theme["tab_active"] if mode == MODE_123 else theme["tab_inactive"])
             tex, tw, th = render_text("123", font_small, theme["text_btn"] if mode == MODE_123 else theme["text"])
             if tex:
-                sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(tab_x + tab_w//2 - tw//2, tab_y + tab_h//2 - th//2, tw, th))
+                sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(t123_x + tab_w//2 - tw//2, tab_y + tab_h//2 - th//2 + 2, tw, th))
                 sdl2.SDL_DestroyTexture(tex)
                 
             # Fx Tab
-            renderer.fill((tab_x + tab_w, tab_y, tab_w, tab_h), theme["tab_active"] if mode == MODE_FX else theme["tab_inactive"])
+            tfx_x = t123_x + tab_w + 4
+            renderer.fill((tfx_x, tab_y, tab_w, tab_h), theme["tab_active"] if mode == MODE_FX else theme["tab_inactive"])
             tex, tw, th = render_text("Fx", font_small, theme["text_btn"] if mode == MODE_FX else theme["text"])
             if tex:
-                sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(tab_x + tab_w + tab_w//2 - tw//2, tab_y + tab_h//2 - th//2, tw, th))
+                sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(tfx_x + tab_w//2 - tw//2, tab_y + tab_h//2 - th//2 + 2, tw, th))
+                sdl2.SDL_DestroyTexture(tex)
+
+            # [R] Shoulder Button
+            r_x = tfx_x + tab_w + 10
+            r_bg = theme.get("btn_lr_bg", theme["bg"])
+            r_fg = sdl2.SDL_Color(40, 40, 40, 255) if "btn_lr_bg" in theme else theme["text"]
+            renderer.fill((r_x, badge_y, badge_w, badge_h), theme["popup_border"])
+            renderer.fill((r_x + 1, badge_y + 1, badge_w - 2, badge_h - 2), r_bg)
+            sdlttf.TTF_SetFontStyle(font_mini, sdlttf.TTF_STYLE_BOLD)
+            tex, tw, th = render_text("R", font_mini, r_fg)
+            sdlttf.TTF_SetFontStyle(font_mini, sdlttf.TTF_STYLE_NORMAL)
+            if tex:
+                sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(r_x + (badge_w - tw)//2, badge_y + (badge_h - th)//2 + 1, tw, th))
+                sdl2.SDL_DestroyTexture(tex)
+
+            # Theme Name badge in top right
+            tex, tw, th = render_text(theme["name"], font_mini, theme["result_preview"])
+            if tex:
+                sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(w_w - tw - 40, tab_y + tab_h//2 - th//2, tw, th))
                 sdl2.SDL_DestroyTexture(tex)
     
             # Draw Grid
@@ -631,10 +773,10 @@ def main():
                     
                         renderer.fill((bx, by, btn_w, btn_h), b_color)
                         
-                        t_color = theme["text_eq"] if char == '=' else theme["text_btn"]
+                        t_color = theme.get("text_eq", theme["text_btn"]) if char == '=' else theme["text_btn"]
                         tex, tw, th = render_text(char, font_medium, t_color)
                         if tex:
-                            sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(bx + btn_w//2 - tw//2, by + btn_h//2 - th//2, tw, th))
+                            sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(bx + btn_w//2 - tw//2, by + btn_h//2 - th//2 + 5, tw, th))
                             sdl2.SDL_DestroyTexture(tex)
             else:
                 # Fx Mode
@@ -662,7 +804,7 @@ def main():
                             by = start_y + r * (btn_h + padding)
                             
                             b_color = theme["btn_op_bg"]
-                            if char == 'Inv' and inv_mode: b_color = theme["sel_color"] # Highlight when active
+                            if char == 'Inv' and inv_mode: b_color = theme["sel_color"]
                             
                             if cursor_y == r and cursor_x == c: 
                                 b_color = theme["sel_color"]
@@ -672,7 +814,7 @@ def main():
                             
                             tex, tw, th = render_text(char, font_medium, theme["text_btn"])
                             if tex:
-                                sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(bx + bw//2 - tw//2, by + btn_h//2 - th//2, tw, th))
+                                sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(bx + bw//2 - tw//2, by + btn_h//2 - th//2 + 5, tw, th))
                                 sdl2.SDL_DestroyTexture(tex)
                     else:
                         for c in range(grid_cols):
@@ -690,10 +832,10 @@ def main():
                             
                             renderer.fill((bx, by, btn_w, btn_h), b_color)
                             
-                            t_color = theme["text_eq"] if char == '=' else theme["text_btn"]
+                            t_color = theme.get("text_eq", theme["text_btn"]) if char == '=' else theme["text_btn"]
                             tex, tw, th = render_text(char, font_medium, t_color)
                             if tex:
-                                sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(bx + btn_w//2 - tw//2, by + btn_h//2 - th//2, tw, th))
+                                sdl2.SDL_RenderCopy(renderer.sdlrenderer, tex, None, sdl2.SDL_Rect(bx + btn_w//2 - tw//2, by + btn_h//2 - th//2 + 5, tw, th))
                                 sdl2.SDL_DestroyTexture(tex)
                                 
             # History Overlay
@@ -724,7 +866,6 @@ def main():
                 ("B", "Del"),
                 ("X", "="),
                 ("Y", "AC"),
-                ("L/R", "Mode"),
                 ("L2/R2", "Theme"),
                 ("SELECT", "History"),
             ]
